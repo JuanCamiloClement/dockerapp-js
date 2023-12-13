@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <title>key value lookup service</title>
+</head>
+
+<body>
+  <form>
+    <input type="text" id="key">
+    <input type="text" id="value">
+    <button type="submit" id="post">Save</button>
+    <button type="submit" id="get">Load</button>
+  </form>
+  <script>
+    const keyInput = document.getElementById('key');
+    const valueInput = document.getElementById('value');
+    const getButton = document.getElementById('get');
+    const postButton = document.getElementById('post');
+
+    const baseURL = 'http://localhost:8080'
+
+    const getInfo = async (e) => {
+      e.preventDefault();
+      const key = keyInput.value;
+      const response = await fetch(`${baseURL}/${key}`, {
+        method: 'GET',
+      });
+      const data = await response.json();
+      console.log(data.message);
+      valueInput.value = data.message
+    }
+    getButton.addEventListener('click', getInfo);
+
+    const postInfo = async (e) => {
+      e.preventDefault();
+      const key = keyInput.value;
+      const value = valueInput.value;
+      const pair = { key, value }
+      await fetch(baseURL, {
+        method: 'POST',
+        body: JSON.stringify(pair),
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      });
+      keyInput.value = "";
+      valueInput.value = "";
+    }
+    postButton.addEventListener('click', postInfo);
+  </script>
+</body>
+
+</html>
