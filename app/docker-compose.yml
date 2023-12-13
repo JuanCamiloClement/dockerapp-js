@@ -1,0 +1,10 @@
+version: "3.0"
+services:
+  dockerapp:
+    build: .
+    ports:
+      - "8000:5000"
+    depends_on:
+      - redis
+  redis:
+    image: arm64v8/redis
